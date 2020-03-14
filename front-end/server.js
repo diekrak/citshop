@@ -11,6 +11,7 @@ var request      = require("request")
   , helpers      = require("./helpers")
   , cart         = require("./api/cart")
   , catalogue    = require("./api/catalogue")
+  // , upload    = require("./api/upload")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
   , app          = express()
@@ -44,7 +45,7 @@ app.use(cart);
 app.use(catalogue);
 app.use(orders);
 app.use(user);
-
+// app.use(upload);
 var server = app.listen(process.env.PORT || 8079, function () {
   var port = server.address().port;
   console.log("App now running in %s mode on port %d", app.get("env"), port);
