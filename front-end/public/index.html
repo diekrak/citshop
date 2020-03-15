@@ -297,27 +297,29 @@
                         alert("Thanks!");
                     }
                 });
-
             });
             $('#newProductForm').on("submit", function (event) {
 
                 event.preventDefault();
-                $("#newProduct").hide();
-                var fd = $('#newProductForm').serialize();
-
-                $.post(
-                    "/newProduct",
-                    fd,
-                    function (data) {
-                        var resp = JSON.parse(data);
+                var data = new FormData($(this)[0]);
+                $.ajax({
+                    url: '/upload-newProduct',
+                    type: 'POST',
+                    contentType: false,
+                    data: data,
+                    success: function (msg) {
+                        console.log(msg);
+                        var resp = JSON.parse(msg);
                         if (resp.success === "0") {
                             $('#logonmessage').html("Product cant be created, already exists");
                         } else {
                             $('#logonmessage').html("Product created");
                         }
-                    }
-                );
-
+                        $('#newProductForm')[0].reset();
+                    },
+                    processData: false,
+                    cache: false
+                });
 
             });
             $("#login").hide();
@@ -398,46 +400,24 @@
             </form>
         </div>
         <div id="newProduct">
-            <!--            <h1>New Product</h1>-->
-            <!--            <p>-->
-            <!--            <form id="newProductForma" action="/upload-profile-pic" method="POST" enctype="multipart/form-data">-->
-            <!--                Name:<br>-->
-            <!--                <input type="text" name="name" value="">-->
-            <!--                <br>-->
-            <!--                Quantity:<br>-->
-            <!--                <input type="number" name="quantity" value="">-->
-            <!--                <br>-->
-            <!--                Price:<br>-->
-            <!--                <input type="number" name="price" value="">-->
-            <!--                <br>-->
+            <!--            <iframe name="ifnewProduct" id="ifnewProduct" style="display: none;"></iframe>-->
+            <h1>New Product</h1>
+            <p>
+            <form id="newProductForm" action="/" target="ifnewProduct" enctype="" method="post">
+                Name:<br>
+                <input type="text" name="name" value="">
+                <br>
+                Quantity:<br>
+                <input type="number" name="quantity" value="">
+                <br>
+                Price:<br>
+                <input type="number" name="price" value="">
+                <br>
 
-            <!--                Image Name:<br>-->
-            <!--                <input type="file" name="image" value="">-->
-            <!--                <input type="submit">-->
-            <!--            </form>-->
-
-            <div>
-                <form method="POST" action="/upload-profile-pic" enctype="multipart/form-data">
-                    <div>
-                        Name:<br>
-                        <input type="text" name="name" value="">
-                        <br>
-                        Quantity:<br>
-                        <input type="number" name="quantity" value="">
-                        <br>
-                        Price:<br>
-                        <input type="number" name="price" value="">
-                        <br>
-                    </div>
-                    <div>
-                        Image Name:<br>
-                        <input type="file" name="profile_pic" />
-                        <input type="submit" name="btn_upload_profile_pic" value="Upload"/>
-                    </div>
-                </form>
-
-            </div>
-
+                Image Name:<br>
+                <input type="file" name="image" value="">
+                <input type="submit">
+            </form>
         </div>
     </article>
 </div>
